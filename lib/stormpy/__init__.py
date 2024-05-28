@@ -333,9 +333,6 @@ def check_model_sparse(model, property, only_initial_states=False, extract_sched
                 return core._model_checking_fully_observable(model, task, environment=environment)
         else:
             raise RuntimeError("Model checking of partially observable models is handled via dedicated methods, unless the force fully-observable is set.")
-
-
-
     if model.supports_parameters:
         task = core.ParametricCheckTask(formula, only_initial_states)
         task.set_produce_schedulers(extract_scheduler)
@@ -360,6 +357,15 @@ def check_model_sparse(model, property, only_initial_states=False, extract_sched
                 task.set_hint(hint)
             return core._model_checking_sparse_engine(model, task, environment=environment)
 
+def build_product_model(model, property, environment=Environment()):
+        if isinstance(property, Property):
+            formula = property.raw_formula
+        else:
+            formula = property
+
+        task = core.CheckTask(formula, False)
+        task.set_produce_schedulers(False)
+        return core._build_product_model(model, task, environment=environment)
 
 def check_model_dd(model, property, only_initial_states=False, environment=Environment()):
     """
