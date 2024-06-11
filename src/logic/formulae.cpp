@@ -31,6 +31,7 @@ void define_formulae(py::module& m) {
         .def_property_readonly("is_bounded_until_formula", &storm::logic::Formula::isBoundedUntilFormula)
         .def_property_readonly("is_until_formula", &storm::logic::Formula::isUntilFormula)
         .def_property_readonly("is_multi_objective_formula", &storm::logic::Formula::isMultiObjectiveFormula)
+        .def_property_readonly("is_complex_path_formula", &storm::logic::Formula::isComplexPathFormula)
             ;
 
     // Path Formulae
