@@ -17,9 +17,6 @@
 template<typename ValueType>
 using CheckTask = storm::modelchecker::CheckTask<storm::logic::Formula, ValueType>;
 
-//template<typename ValueType>
-//using ProductModel = storm::modelchecker::helper::ProductModel<storm::models::sparse::Mdp<ValueType>>;
-
 // Thin wrapper for model checking using sparse engine
 template<typename ValueType>
 std::shared_ptr<storm::modelchecker::CheckResult> modelCheckingSparseEngine(std::shared_ptr<storm::models::sparse::Model<ValueType>> model, CheckTask<ValueType> const& task, storm::Environment const& env) {
@@ -175,6 +172,7 @@ void define_modelchecking(py::module& m) {
     m.def("_multi_objective_model_checking_exact", &multiObjectiveModelChecking<storm::RationalNumber>, "Run multi-objective model checking", py::arg("model"), py::arg("formula"), py::arg("environment") = storm::Environment());
 
     m.def("_build_product_model", &buildProductModel<double>, "Build the cross product between a MDP and a deterministic automaton for a P(LTL) formula", py::arg("mdp"), py::arg("task"), py::arg("environment")  = storm::Environment());
+
     py::class_<storm::modelchecker::helper::ProductModel<storm::models::sparse::Mdp<double>>, std::shared_ptr<storm::modelchecker::helper::ProductModel<storm::models::sparse::Mdp<double>>>> (m, "Product Model", "Exporting the cross-product")
         .def_property_readonly("product_model", [](storm::modelchecker::helper::ProductModel<storm::models::sparse::Mdp<double>>& pm) {return pm.getModel();}, "get product model")
         .def_property_readonly("product_index_to_product_state", [](storm::modelchecker::helper::ProductModel<storm::models::sparse::Mdp<double>>& pm) {return pm.getProductIndexToProductState();}, "product index to product state")

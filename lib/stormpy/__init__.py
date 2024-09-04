@@ -363,8 +363,9 @@ def build_product_model(model, property, environment=Environment()):
         else:
             formula = property
 
-        task = core.CheckTask(formula, False)
+        task = core.CheckTask(formula, True)
         task.set_produce_schedulers(False)
+
         return core._build_product_model(model, task, environment=environment)
 
 def check_model_dd(model, property, only_initial_states=False, environment=Environment()):
