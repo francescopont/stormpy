@@ -11,7 +11,7 @@
 #include "storm/environment/Environment.h"
 #include "storm/utility/graph.h"
 
-#include "storm/modelchecker/helper/ltl/ProductModel.h"
+#include "storm/transformer/ProductModel.h"
 
 
 template<typename ValueType>
@@ -102,7 +102,7 @@ storm::storage::BitVector getReachableStates(storm::models::sparse::Model<ValueT
 }
 
 template<typename ValueType>
-std::shared_ptr<storm::modelchecker::helper::ProductModel<storm::models::sparse::Mdp<ValueType>>> buildProductModel(std::shared_ptr<storm::models::sparse::Mdp<ValueType>> const& mdp,
+std::shared_ptr<storm::transformer::ProductModel<storm::models::sparse::Mdp<ValueType>>> buildProductModel(std::shared_ptr<storm::models::sparse::Mdp<ValueType>> const& mdp,
                                CheckTask<ValueType> const& task, storm::Environment const& env){
     auto res = storm::api::buildProductModel<ValueType>(env, mdp, task);
     return res;
@@ -173,10 +173,10 @@ void define_modelchecking(py::module& m) {
 
     m.def("_build_product_model", &buildProductModel<double>, "Build the cross product between a MDP and a deterministic automaton for a P(LTL) formula", py::arg("mdp"), py::arg("task"), py::arg("environment")  = storm::Environment());
 
-    py::class_<storm::modelchecker::helper::ProductModel<storm::models::sparse::Mdp<double>>, std::shared_ptr<storm::modelchecker::helper::ProductModel<storm::models::sparse::Mdp<double>>>> (m, "Product Model", "Exporting the cross-product")
-        .def_property_readonly("product_model", [](storm::modelchecker::helper::ProductModel<storm::models::sparse::Mdp<double>>& pm) {return pm.getModel();}, "get product model")
-        .def_property_readonly("product_index_to_product_state", [](storm::modelchecker::helper::ProductModel<storm::models::sparse::Mdp<double>>& pm) {return pm.getProductIndexToProductState();}, "product index to product state")
-        .def_property_readonly("accepting_states", [](storm::modelchecker::helper::ProductModel<storm::models::sparse::Mdp<double>>& pm) {return pm.getAcceptingStates();}, "accepting states of the product model")
+    py::class_<storm::transformer::ProductModel<storm::models::sparse::Mdp<double>>, std::shared_ptr<storm::transformer::ProductModel<storm::models::sparse::Mdp<double>>>> (m, "Product Model", "Exporting the cross-product")
+        .def_property_readonly("product_model", [](storm::transformer::ProductModel<storm::models::sparse::Mdp<double>>& pm) {return pm.getModel();}, "get product model")
+        .def_property_readonly("product_index_to_product_state", [](storm::transformer::ProductModel<storm::models::sparse::Mdp<double>>& pm) {return pm.getProductIndexToProductState();}, "product index to product state")
+        .def_property_readonly("accepting_state", [](storm::transformer::ProductModel<storm::models::sparse::Mdp<double>>& pm) {return pm.getAcceptingState();}, "accepting state of the product model")
 
     ;
 }
